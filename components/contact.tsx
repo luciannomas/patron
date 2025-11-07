@@ -22,14 +22,39 @@ export default function Contact() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Formulario enviado:", formData)
-    setSubmitted(true)
-    setTimeout(() => {
-      setFormData({ name: "", email: "", subject: "", message: "" })
-      setSubmitted(false)
-    }, 3000)
+    setLoading(true)
+    setError("")
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubmitted(true)
+        setTimeout(() => {
+          setFormData({ name: "", email: "", subject: "", message: "" })
+          setSubmitted(false)
+        }, 5000)
+      } else {
+        setError(data.error || "Error al enviar el mensaje")
+      }
+    } catch (err) {
+      setError("Error al enviar el mensaje. Por favor intenta de nuevo.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -108,11 +133,24 @@ export default function Contact() {
             ></textarea>
           </div>
 
+          {error && (
+            <div className="p-4 bg-red-500 text-white rounded-lg font-bold text-center">
+              {error}
+            </div>
+          )}
+
+          {submitted && (
+            <div className="p-4 bg-green-500 text-white rounded-lg font-bold text-center">
+              ✓ ¡Mensaje enviado exitosamente! Te responderemos pronto.
+            </div>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-orange-400 text-black py-3 rounded-lg font-black text-lg hover:bg-orange-500 transition"
+            disabled={loading || submitted}
+            className="w-full bg-orange-400 text-black py-3 rounded-lg font-black text-lg hover:bg-orange-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submitted ? "✓ Mensaje Enviado" : "Enviar Mensaje"}
+            {loading ? "Enviando..." : submitted ? "✓ Mensaje Enviado" : "Enviar Mensaje"}
           </button>
         </form>
 
