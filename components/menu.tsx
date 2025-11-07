@@ -3,8 +3,10 @@ import { useState } from "react"
 import { MessageCircle, Zap } from "lucide-react"
 
 const BRANCHES = [
-  { name: "San Justo", whatsapp: "541123456789" },
-  { name: "Ciudadela", whatsapp: "541129876543" },
+  { name: "Marina", whatsapp: "541123456789" },
+  { name: "Ramos", whatsapp: "541129876543" },
+  { name: "Atalaya", whatsapp: "541145678901" },
+  { name: "Morón", whatsapp: "541165432109" },
 ]
 
 const PROMOS = [
