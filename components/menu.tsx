@@ -256,7 +256,6 @@ const MenuCard = ({ item, onAddToCart }: any) => (
 
 const Menu = () => {
   const { addItem, selectedBranch, setSelectedBranch } = useCart()
-  const [localBranch, setLocalBranch] = useState(BRANCHES[0])
 
   useEffect(() => {
     // Set initial branch if not set
@@ -266,7 +265,6 @@ const Menu = () => {
   }, [selectedBranch, setSelectedBranch])
 
   const handleBranchChange = (branch: any) => {
-    setLocalBranch(branch)
     setSelectedBranch(branch)
   }
 
@@ -305,7 +303,7 @@ const Menu = () => {
               key={branch.name}
               onClick={() => handleBranchChange(branch)}
               className={`px-6 py-3 rounded-full font-black transition ${
-                localBranch.name === branch.name
+                selectedBranch?.name === branch.name
                   ? "bg-orange-400 text-black"
                   : "bg-green-700 text-white hover:bg-green-600"
               }`}

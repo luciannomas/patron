@@ -13,15 +13,19 @@ export default function Header() {
     setIsMenuOpen(false)
   }
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   return (
     <header className="sticky top-0 z-50 bg-[#2d5016] text-white shadow-xl border-b-4 border-[#ff8c00]">
       <nav className="flex items-center justify-between px-4 py-4 md:px-8">
-        <div className="flex items-center gap-3">
+        <button onClick={scrollToTop} className="flex items-center gap-3 hover:opacity-80 transition">
           <Image src="/icono-patron.png" alt="El Patrón del Truck" width={40} height={40} className="rounded-full bg-[#2d5016]" />
           <div className="text-2xl md:text-3xl font-black text-white">
             EL PATRÓN <span className="text-[#ff8c00]">del Truck</span>
           </div>
-        </div>
+        </button>
 
         {/* Mobile menu button */}
         <button

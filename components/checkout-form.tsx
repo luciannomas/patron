@@ -118,13 +118,15 @@ export default function CheckoutForm({ onClose, onBack }: CheckoutFormProps) {
                       Número de teléfono <span className="text-red-500">*</span>
                     </label>
                     <div className="flex gap-2">
-                      <span className="px-3 py-2 bg-gray-100 border-b-2 border-gray-300 text-sm">🇦🇷</span>
+                      <div className="px-4 py-2 bg-orange-400 border-b-2 border-orange-400 rounded-md flex items-center justify-center font-bold text-black">
+                        🇦🇷 +54
+                      </div>
                       <input
                         type="tel"
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="011 15-2345-6789"
+                        placeholder="11 2529-3394"
                         className="flex-1 px-4 py-2 border-b-2 border-gray-300 focus:border-orange-400 outline-none transition text-gray-800"
                       />
                     </div>
