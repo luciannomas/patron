@@ -118,18 +118,18 @@ export default function Contact() {
 
         <div className="flex gap-8 justify-center mt-12 flex-wrap">
           <a
-            href="tel:+5411234567890"
+            href="tel:+5491125293394"
             className="flex items-center gap-3 text-orange-400 hover:text-green-400 transition font-bold"
           >
             <Phone size={24} />
-            <span>+54 11 2345-6789</span>
+            <span>+54 11 2529-3394</span>
           </a>
           <a
-            href="mailto:info@elpatron.com"
+            href="mailto:elpatrondeltruck@gmail.com"
             className="flex items-center gap-3 text-orange-400 hover:text-green-400 transition font-bold"
           >
             <Mail size={24} />
-            <span>info@elpatron.com</span>
+            <span>elpatrondeltruck@gmail.com</span>
           </a>
         </div>
       </div>

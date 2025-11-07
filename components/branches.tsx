@@ -6,26 +6,26 @@ const BRANCHES_INFO = [
   {
     name: "Marina",
     address: "Barrio Marina y alrededores, Buenos Aires",
-    phone: "+54 11 2345-6789",
-    whatsapp: "541123456789",
+    phone: "+54 11 2529-3394",
+    whatsapp: "5491125293394",
   },
   {
     name: "Ramos",
     address: "Barrio Ramos y alrededores, Buenos Aires",
-    phone: "+54 11 2987-6543",
-    whatsapp: "541129876543",
+    phone: "+54 11 3043-7839",
+    whatsapp: "5491130437839",
   },
   {
     name: "Atalaya",
     address: "Barrio Atalaya y alrededores, Buenos Aires",
-    phone: "+54 11 4567-8901",
-    whatsapp: "541145678901",
+    phone: "+54 11 5310-0824",
+    whatsapp: "5491153100824",
   },
   {
     name: "Morón",
     address: "Barrio Morón y alrededores, Buenos Aires",
-    phone: "+54 11 6543-2109",
-    whatsapp: "541165432109",
+    phone: "+54 11 3204-8804",
+    whatsapp: "5491132048804",
   },
 ]
 

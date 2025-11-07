@@ -1,12 +1,14 @@
 "use client"
-import { useState } from "react"
-import { MessageCircle, Zap } from "lucide-react"
+import { useState, useEffect } from "react"
+import { MessageCircle, Zap, ShoppingCart } from "lucide-react"
+import { useCart } from "@/lib/cart-context"
+import { toast } from "sonner"
 
 const BRANCHES = [
-  { name: "Marina", whatsapp: "541123456789" },
-  { name: "Ramos", whatsapp: "541129876543" },
-  { name: "Atalaya", whatsapp: "541145678901" },
-  { name: "Morón", whatsapp: "541165432109" },
+  { name: "Marina", whatsapp: "5491125293394" },
+  { name: "Ramos", whatsapp: "5491130437839" },
+  { name: "Atalaya", whatsapp: "5491153100824" },
+  { name: "Morón", whatsapp: "5491132048804" },
 ]
 
 const PROMOS = [
@@ -230,7 +232,7 @@ const EXTRAS = [
   { id: 5, name: "Dip de bacón", description: "Bacón en cubos", price: "$1.700", image: "/dip-bacon.jpg" },
 ]
 
-const MenuCard = ({ item, onOrderClick }: any) => (
+const MenuCard = ({ item, onAddToCart }: any) => (
   <div className="bg-gray-900 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition flex flex-col h-full">
     <div className="h-40 overflow-hidden">
       <img src={item.image || "/placeholder.svg"} alt={item.name} className="w-full h-full object-cover" />
@@ -241,11 +243,11 @@ const MenuCard = ({ item, onOrderClick }: any) => (
       <div className="mt-auto flex items-center justify-between gap-3 pt-3 border-t border-gray-700">
         <span className="text-xl font-black text-orange-400">{item.price}</span>
         <button
-          onClick={() => onOrderClick(item)}
+          onClick={() => onAddToCart(item)}
           className="bg-orange-400 text-black px-3 py-2 rounded font-bold hover:bg-orange-500 transition flex items-center gap-2 whitespace-nowrap text-sm"
         >
-          <MessageCircle size={14} />
-          Pedir
+          <ShoppingCart size={14} />
+          Agregar
         </button>
       </div>
     </div>
@@ -253,12 +255,39 @@ const MenuCard = ({ item, onOrderClick }: any) => (
 )
 
 const Menu = () => {
-  const [selectedBranch, setSelectedBranch] = useState(BRANCHES[0])
+  const { addItem, selectedBranch, setSelectedBranch } = useCart()
+  const [localBranch, setLocalBranch] = useState(BRANCHES[0])
 
-  const handleOrderClick = (item: any) => {
-    const message = `Hola! Me gustaría pedir: ${item.name} - ${item.price}`
-    const whatsappUrl = `https://wa.me/${selectedBranch.whatsapp}?text=${encodeURIComponent(message)}`
-    window.open(whatsappUrl, "_blank")
+  useEffect(() => {
+    // Set initial branch if not set
+    if (!selectedBranch) {
+      setSelectedBranch(BRANCHES[0])
+    }
+  }, [selectedBranch, setSelectedBranch])
+
+  const handleBranchChange = (branch: any) => {
+    setLocalBranch(branch)
+    setSelectedBranch(branch)
+  }
+
+  const handleAddToCart = (item: any) => {
+    // Extract numeric price from string like "$3.000"
+    const priceNumber = parseFloat(item.price.replace(/[$.]/g, "").replace(",", "."))
+    
+    addItem({
+      id: `${item.id}-${item.name}`,
+      name: item.name,
+      price: item.price,
+      priceNumber: priceNumber,
+      image: item.image,
+      description: item.description,
+    })
+
+    // Show toast notification
+    toast.success(`${item.name} agregado al carrito`, {
+      description: `Precio: ${item.price}`,
+      duration: 2000,
+    })
   }
 
   return (
@@ -274,9 +303,9 @@ const Menu = () => {
           {BRANCHES.map((branch) => (
             <button
               key={branch.name}
-              onClick={() => setSelectedBranch(branch)}
+              onClick={() => handleBranchChange(branch)}
               className={`px-6 py-3 rounded-full font-black transition ${
-                selectedBranch.name === branch.name
+                localBranch.name === branch.name
                   ? "bg-orange-400 text-black"
                   : "bg-green-700 text-white hover:bg-green-600"
               }`}
@@ -309,11 +338,11 @@ const Menu = () => {
                   <div className="flex items-center justify-between gap-3 pt-4 mt-4 border-t-2 border-orange-500">
                     <span className="text-2xl font-black">{promo.price}</span>
                     <button
-                      onClick={() => handleOrderClick(promo)}
+                      onClick={() => handleAddToCart(promo)}
                       className="bg-black text-orange-400 px-3 py-2 rounded font-bold hover:bg-gray-900 transition flex items-center gap-2 whitespace-nowrap"
                     >
-                      <MessageCircle size={16} />
-                      Pedir
+                      <ShoppingCart size={16} />
+                      Agregar
                     </button>
                   </div>
                 </div>
@@ -334,7 +363,7 @@ const Menu = () => {
           <h3 className="text-4xl font-black text-orange-400 mb-6">HAMBURGUESAS</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {BURGERS.map((burger) => (
-              <MenuCard key={burger.id} item={burger} onOrderClick={handleOrderClick} />
+              <MenuCard key={burger.id} item={burger} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </div>
@@ -344,7 +373,7 @@ const Menu = () => {
           <h3 className="text-4xl font-black text-orange-400 mb-6">VEGGIE</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {VEGGIE.map((item) => (
-              <MenuCard key={item.id} item={item} onOrderClick={handleOrderClick} />
+              <MenuCard key={item.id} item={item} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </div>
@@ -354,7 +383,7 @@ const Menu = () => {
           <h3 className="text-4xl font-black text-orange-400 mb-6">MINUTAS</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {MINUTAS.map((item) => (
-              <MenuCard key={item.id} item={item} onOrderClick={handleOrderClick} />
+              <MenuCard key={item.id} item={item} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </div>
@@ -364,7 +393,7 @@ const Menu = () => {
           <h3 className="text-4xl font-black text-orange-400 mb-6">BEBIDAS</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {BEBIDAS.map((item) => (
-              <MenuCard key={item.id} item={item} onOrderClick={handleOrderClick} />
+              <MenuCard key={item.id} item={item} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </div>
@@ -374,7 +403,7 @@ const Menu = () => {
           <h3 className="text-4xl font-black text-orange-400 mb-6">EXTRAS</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {EXTRAS.map((item) => (
-              <MenuCard key={item.id} item={item} onOrderClick={handleOrderClick} />
+              <MenuCard key={item.id} item={item} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </div>

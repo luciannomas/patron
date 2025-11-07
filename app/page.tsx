@@ -7,6 +7,7 @@ import Branches from "@/components/branches"
 import JoinTeam from "@/components/join-team"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
+import Cart from "@/components/cart"
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <JoinTeam />
       <Contact />
       <Footer />
+      <Cart />
     </main>
   )
 }
